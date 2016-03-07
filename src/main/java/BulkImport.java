@@ -3,7 +3,7 @@
  */
 
 import org.apache.http.entity.mime.*;
-import org.apache.http.entity.mime.content.ByteArrayBody;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,10 +21,10 @@ public class BulkImport {
     static final String TRUST_STORE_PASSWORD_PROPERTY ="trust.store.password";
     static final String HOST_PROPERTY ="host";
     static final String PORT_PROPERTY ="port";
-    static final String EXPORT_FOLDER_PROPERTY ="export.path";
+    static final String IMPORT_FOLDER_PROPERTY ="import.path";
     static final String ADMIN_USERID_PROPOERTY ="admin.userid";
     static final String ADMIN_PASSWORD_PROPERTY ="admin.password";
-    static final String EXPORT_API_VERSION_PROPERTY="export.api.version";
+    static final String IMPORT_API_VERSION_PROPERTY ="import.api.version";
     static final String POST ="POST";
     static final String AUTHORIZATION_HTTP_HEADER ="Authorization";
     static final String BASIC_KEY ="Basic";
@@ -56,7 +56,7 @@ public class BulkImport {
             System.setProperty("javax.net.ssl.trustStorePassword", trustStorePassword);
         }
 
-        File folder = new File(prop.getProperty(EXPORT_FOLDER_PROPERTY));
+        File folder = new File(prop.getProperty(IMPORT_FOLDER_PROPERTY));
         File[] listOfFiles = folder.listFiles();
 
         for (int i = 0; i < listOfFiles.length; i++) {
@@ -85,7 +85,7 @@ public class BulkImport {
             FileBody fileBody = new FileBody(api); //image should be a String
             builder.addPart(FILE_KEY, fileBody);
             builder.setBoundary(BOUNDARY_KEY);
-            URL url = new URL(prop.getProperty(HOST_PROPERTY) + ":" + prop.getProperty(PORT_PROPERTY) + "/api-import-export-" + prop.getProperty(EXPORT_API_VERSION_PROPERTY) + "/import-api?"+PRESERVE_PROVIDER_KEY+EQUAL+prop.getProperty(PRESERVE_PROVIDER_PROPERTY));
+            URL url = new URL(prop.getProperty(HOST_PROPERTY) + ":" + prop.getProperty(PORT_PROPERTY) + "/api-import-export-" + prop.getProperty(IMPORT_API_VERSION_PROPERTY) + "/import-api?"+PRESERVE_PROVIDER_KEY+EQUAL+prop.getProperty(PRESERVE_PROVIDER_PROPERTY));
             HttpURLConnection e = (HttpURLConnection)url.openConnection();
             authString= encodeCredentials (prop.getProperty(ADMIN_USERID_PROPOERTY), prop.getProperty(ADMIN_PASSWORD_PROPERTY));
             e.setRequestProperty(AUTHORIZATION_HTTP_HEADER, BASIC_KEY + " " + authString);
@@ -137,7 +137,7 @@ public class BulkImport {
             }
 
                 // Exporting API
-                URL url = new URL(prop.getProperty(HOST_PROPERTY)+":"+prop.getProperty(PORT_PROPERTY)+"/api-import-export-"+prop.getProperty(EXPORT_API_VERSION_PROPERTY)+"/export-api?name="+name+"&version="+version+"&provider="+provider);
+                URL url = new URL(prop.getProperty(HOST_PROPERTY)+":"+prop.getProperty(PORT_PROPERTY)+"/api-import-export-"+prop.getProperty(IMPORT_API_VERSION_PROPERTY)+"/export-api?name="+name+"&version="+version+"&provider="+provider);
                 HttpURLConnection e = (HttpURLConnection)url.openConnection();
                 e.setDoOutput(true);
                 e.setRequestMethod(POST);
@@ -146,7 +146,7 @@ public class BulkImport {
 
 
                 //Writing to file
-                FileOutputStream fos = new FileOutputStream(prop.getProperty(EXPORT_FOLDER_PROPERTY)+name+ZIP_KEY);
+                FileOutputStream fos = new FileOutputStream(prop.getProperty(IMPORT_FOLDER_PROPERTY)+name+ZIP_KEY);
                 fos.write(ByteStreams.toByteArray(e.getInputStream()));
                 fos.close();
             } catch (IOException error) {
