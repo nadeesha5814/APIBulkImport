@@ -20,3 +20,4 @@ The tool consumes the following API
 
 3.Run the bulk importer - Go to the target folder and run the bulk importer by executing `java -jar APIBulkImport-1.0-SNAPSHOT.jar`. You will notice that a copy of your configuration file is created in the target folder for your convience. You can edit this file as required and run the `java -jar` command to see the changes get effected. Please also note that any changes made to the configuration file in the target folder will be over written whenever you rebuild the code, hence it is encouraged to do any configuration changes to the main configuration file.
 
+https://nadeesha678.wordpress.com/2016/03/10/bulk-importing-of-apis-to-api-manager/
